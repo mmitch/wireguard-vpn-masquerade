@@ -1,0 +1,191 @@
+#!/usr/bin/env bash
+#
+# generate a WireGuard configuration to allow multiple clients access to the internet via a server
+#
+# Copyright (C) 2019  Christian Garbs <mitch@cgarbs.de>
+# licensed under GNU GPL v3 or later
+
+### REMINDER: generate private keys with `wg genkey`
+
+### TODO: don't depend on tput presence, use shell function
+### TODO: more colors
+
+# print a column from the clients file
+# $1 = column to read
+read_client_column()
+{
+    local COLUMN="$1"
+    awk "{ print \$$COLUMN }" wgconf.clients
+}
+
+# print the public key to a private key
+# $1 = private key
+pubkey()
+{
+    local PRIVKEY="$1"
+    echo "$PRIVKEY" | wg pubkey
+}
+
+# print the array index of a client name
+# exits with failure if name does not exist
+# $1 = client name
+get_client_index_by_name()
+{
+    local NAME="$1"
+    for IDX in "${!CLIENT_NAME[@]}"; do
+	if [ "$NAME" = "${CLIENT_NAME[$IDX]}" ]; then
+	    echo "$IDX"
+	    return
+	fi
+    done
+    echo "unknown client name \`$NAME'" >&2
+    exit 1
+}
+
+# print help text
+show_help()
+{
+    cat <<EOF
+wgconf <command> [<option> [...]]
+
+available commands:
+help      show help
+clients   list all known clients
+client    show configuration of a client
+qr        show configuration of a client as QR code
+server    show server configuration
+EOF
+}
+
+# print all client names
+show_clients()
+{
+    for NAME in "${CLIENT_NAME[@]}"; do
+	echo "$NAME"
+    done
+}
+
+
+# print a client configuration
+# $1 = client name
+show_client_conf()
+{
+    local NAME="$1" IDX IP PRIVKEY SERVER_PUBKEY
+    IDX="$(get_client_index_by_name "$NAME")"
+    IP="${CLIENT_IP[$IDX]}"
+    PRIVKEY="${CLIENT_PRIVKEY[$IDX]}"
+    SERVER_PUBKEY=$(pubkey "$SERVER_PRIVKEY")
+
+    cat <<EOF
+[Interface]
+Address = ${IP}${VPN_SUBNET_SIZE}
+PrivateKey = ${PRIVKEY}
+DNS = ${DNS_IP}
+
+[Peer]
+PublicKey = ${SERVER_PUBKEY}
+AllowedIPs = 0.0.0.0/0, ::/0
+Endpoint = ${SERVER_EXTERN_IP}:${SERVER_EXTERN_PORT}
+EOF
+}
+
+# print server configuration
+show_server_conf()
+{
+    tput sgr0
+    echo "put this into /etc/network/interfaces.d/${SERVER_VPN_INTERFACE}.conf"
+    tput bold
+    
+    cat <<EOF
+
+## WireGuard configuration for ${SERVER_VPN_INTERFACE}
+auto ${SERVER_VPN_INTERFACE}
+iface ${SERVER_VPN_INTERFACE} inet static
+	address ${SERVER_VPN_IP}
+	netmask ${VPN_NETMASK}
+	pre-up wg-quick up \$IFACE
+	post-down wg-quick down \$IFACE
+
+EOF
+    
+    tput sgr0
+    echo "put this into /etc/wireguard/${SERVER_VPN_INTERFACE}.conf"
+    tput bold
+    
+    cat <<EOF
+
+[Interface]
+PrivateKey = ${SERVER_PRIVKEY}
+ListenPort = ${SERVER_EXTERN_PORT}
+
+EOF
+
+    
+    local IDX IP NAME PUBKEY
+    for IDX in "${!CLIENT_NAME[@]}"; do
+	NAME="${CLIENT_NAME[$IDX]}"
+	IP="${CLIENT_IP[$IDX]}"
+	PUBKEY=$(pubkey "${CLIENT_PRIVKEY[$IDX]}")
+	cat <<EOF
+[Peer]
+PublicKey  = ${PUBKEY}
+AllowedIPs = ${IP}/32
+
+EOF
+    done
+    
+    tput sgr0
+    echo "don't forget, there is a private keys in there:"
+    tput bold
+    
+    cat<<EOF
+
+  chown root:root /etc/wireguard/${SERVER_VPN_INTERFACE}.conf
+  chmod 600 /etc/wireguard/${SERVER_VPN_INTERFACE}.conf
+
+EOF
+
+    tput sgr0
+    echo "activate masquerading (oldschool/iptables)"
+    tput bold
+
+    cat<<EOF
+
+iptables -t nat -A POSTROUTING -o ${SERVER_EXTERN_INTERACE} -j MASQUERADE
+
+EOF
+    
+    tput sgr0
+    echo "activate masquerading (fancy nftables)"
+    tput bold
+
+    cat<<EOF
+
+table ip nat {
+        chain prerouting {
+                type nat hook prerouting priority 0; policy accept;
+        }
+        chain postrouting {
+                type nat hook postrouting priority 100; policy accept;
+                oifname ${SERVER_EXTERN_INTERACE} masquerade
+        }
+}
+
+EOF
+    
+    tput sgr0
+}
+
+source wgconf.server
+
+CLIENT_NAME=($(   read_client_column 1))
+CLIENT_IP=($(     read_client_column 2))
+CLIENT_PRIVKEY=($(read_client_column 3))
+
+case "$1" in
+    client)	show_client_conf "$2";;
+    qr)         show_client_conf "$2" | qrencode -t utf8;;
+    clients)	show_clients;;
+    server)	show_server_conf;;
+    *)		show_help;;
+esac
