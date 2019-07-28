@@ -15,7 +15,7 @@
 read_client_column()
 {
     local COLUMN="$1"
-    awk "{ print \$$COLUMN }" wgconf.clients
+    awk "{ print \$$COLUMN }" wg-conf.clients
 }
 
 # print the public key to a private key
@@ -176,7 +176,7 @@ EOF
     tput sgr0
 }
 
-source wgconf.server
+source wg-conf.server
 
 CLIENT_NAME=($(   read_client_column 1))
 CLIENT_IP=($(     read_client_column 2))
