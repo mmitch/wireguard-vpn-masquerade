@@ -52,7 +52,7 @@ for TESTSCRIPT in tests/*.test; do
     
     echo ">>> running test $TESTNAME:"
 
-    bash -e "$TESTSCRIPT" > "$ACTUAL" 2>&1
+    bash -e "$TESTSCRIPT" > "$ACTUAL" 2>&1 || true
 
     diff -Nau "$EXPECTED" "$ACTUAL" > "$DIFF" || true
     if [ -s "$DIFF" ]; then

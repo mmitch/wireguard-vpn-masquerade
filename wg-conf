@@ -10,6 +10,8 @@
 ### TODO: don't depend on tput presence, use shell function
 ### TODO: more colors
 
+set -e
+
 # print a column from the clients file
 # $1 = column to read
 read_client_column()
