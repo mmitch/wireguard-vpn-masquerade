@@ -148,34 +148,6 @@ EOF
 EOF
 
     tput sgr0
-    echo "activate masquerading (oldschool/iptables)"
-    tput bold
-
-    cat<<EOF
-
-iptables -t nat -A POSTROUTING -o ${SERVER_EXTERN_INTERACE} -j MASQUERADE
-
-EOF
-    
-    tput sgr0
-    echo "activate masquerading (fancy nftables)"
-    tput bold
-
-    cat<<EOF
-
-table ip nat {
-        chain prerouting {
-                type nat hook prerouting priority 0; policy accept;
-        }
-        chain postrouting {
-                type nat hook postrouting priority 100; policy accept;
-                oifname ${SERVER_EXTERN_INTERACE} masquerade
-        }
-}
-
-EOF
-    
-    tput sgr0
 }
 
 source wg-conf.server
