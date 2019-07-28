@@ -178,9 +178,9 @@ EOF
 
 source wg-conf.server
 
-CLIENT_NAME=($(   read_client_column 1))
-CLIENT_IP=($(     read_client_column 2))
-CLIENT_PRIVKEY=($(read_client_column 3))
+mapfile -t CLIENT_NAME    < <( read_client_column 1 )
+mapfile -t CLIENT_IP      < <( read_client_column 2 )
+mapfile -t CLIENT_PRIVKEY < <( read_client_column 3 )
 
 case "$1" in
     client)	show_client_conf "$2";;
