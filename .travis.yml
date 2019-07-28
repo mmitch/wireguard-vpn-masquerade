@@ -1,10 +1,5 @@
 language: minimal
 
-addons:
-  apt:
-    packages:
-      - qrencode
-
 install:
   - true
 

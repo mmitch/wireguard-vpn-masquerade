@@ -21,7 +21,7 @@ fi
 # no need for actual wg command
 wg()
 {
-    if [ "$1" != "pubkey" ]; then
+    if [ "$*" != 'pubkey' ]; then
 	echo "(fake) wg: unknown command: $*"
     fi
     read -r PRIVATE
@@ -33,6 +33,23 @@ wg()
     esac
 }
 export -f wg
+
+# no need for actual qrencode command
+# there are subtile differences in the codes generated
+# by different versions of qrencode that break our tests
+# (because of all the error corrections in a QR code,
+#  slightly different results are valid, but using diff(1)
+#  to check the result fails because of the differences)
+qrencode()
+{
+    if [ "$*" != '-t utf8' ] ; then
+	echo "(fake) qrencode: unknown command: $*"
+    fi
+    while read -r LINE; do
+	echo "QRQRQR:: $LINE"
+    done
+}
+export -f qrencode
 
 # don't use actual tput command in tests,
 # might fail because of different terminals
