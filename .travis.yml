@@ -9,5 +9,5 @@ install:
   - true
 
 script:
-  - shellcheck -x adwg-conf
+  - shellcheck -x wg-conf
   - cd test && ./run-tests.sh
