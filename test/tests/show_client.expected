@@ -1,0 +1,9 @@
+[Interface]
+Address = 10.10.10.11/24
+PrivateKey = PRIVATE-KEY-1
+DNS = 10.10.10.10
+
+[Peer]
+PublicKey = PUBLIC-SERVER-KEY
+AllowedIPs = 0.0.0.0/0, ::/0
+Endpoint = SERVER-IP:51820

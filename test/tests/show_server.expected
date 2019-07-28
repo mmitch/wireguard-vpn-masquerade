@@ -1,0 +1,45 @@
+put this into /etc/network/interfaces.d/wg0.conf
+
+## WireGuard configuration for wg0
+auto wg0
+iface wg0 inet static
+	address 10.10.10.10
+	netmask 
+	pre-up wg-quick up $IFACE
+	post-down wg-quick down $IFACE
+
+put this into /etc/wireguard/wg0.conf
+
+[Interface]
+PrivateKey = PRIVATE-KEY
+ListenPort = 51820
+
+[Peer]
+PublicKey  = PUBLIC-CLIENT-KEY-1
+AllowedIPs = 10.10.10.11/32
+
+[Peer]
+PublicKey  = PUBLIC-CLIENT-KEY-2
+AllowedIPs = 10.10.10.12/32
+
+don't forget, there is a private keys in there:
+
+  chown root:root /etc/wireguard/wg0.conf
+  chmod 600 /etc/wireguard/wg0.conf
+
+activate masquerading (oldschool/iptables)
+
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+
+activate masquerading (fancy nftables)
+
+table ip nat {
+        chain prerouting {
+                type nat hook prerouting priority 0; policy accept;
+        }
+        chain postrouting {
+                type nat hook postrouting priority 100; policy accept;
+                oifname eth0 masquerade
+        }
+}
+

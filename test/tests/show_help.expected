@@ -1,0 +1,8 @@
+wgconf <command> [<option> [...]]
+
+available commands:
+help      show help
+clients   list all known clients
+client    show configuration of a client
+qr        show configuration of a client as QR code
+server    show server configuration
