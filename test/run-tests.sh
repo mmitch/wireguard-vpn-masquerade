@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+#
+# test script for wireguard-vpn-masquerade
+#
+# Copyright (C) 2019  Christian Garbs <mitch@cgarbs.de>
+# licensed under GNU GPL v3 or later
 
 set -e
 
