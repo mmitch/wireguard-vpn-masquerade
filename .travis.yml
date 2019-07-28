@@ -1,0 +1,13 @@
+language: minimal
+
+addons:
+  apt:
+    packages:
+      - qrencode
+
+install:
+  - true
+
+script:
+  - shellcheck -x adwg-conf
+  - cd test && ./run-tests.sh
