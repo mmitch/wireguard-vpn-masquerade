@@ -4,7 +4,7 @@ put this into /etc/network/interfaces.d/wg0.conf
 auto wg0
 iface wg0 inet static
 	address 10.10.10.10
-	netmask 
+	netmask 255.255.255.0
 	pre-up wg-quick up $IFACE
 	post-down wg-quick down $IFACE
 

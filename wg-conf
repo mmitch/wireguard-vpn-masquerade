@@ -104,7 +104,7 @@ show_server_conf()
 auto ${SERVER_VPN_INTERFACE}
 iface ${SERVER_VPN_INTERFACE} inet static
 	address ${SERVER_VPN_IP}
-	netmask ${VPN_NETMASK}
+	netmask ${VPN_SUBNET_NETMASK}
 	pre-up wg-quick up \$IFACE
 	post-down wg-quick down \$IFACE
 
