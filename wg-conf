@@ -95,7 +95,7 @@ EOF
 show_server_conf()
 {
     tput sgr0
-    echo "put this into /etc/network/interfaces.d/${SERVER_VPN_INTERFACE}.conf"
+    echo "put this into /etc/network/interfaces.d/${SERVER_VPN_INTERFACE}.cfg"
     tput bold
     
     cat <<EOF
