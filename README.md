@@ -67,11 +67,12 @@ These things have to be done only once.
 
 1. install `wireguard-vpn-masquerade` (eg `github clone
    https://github.com/mmitch/wireguard-vpn-masquerade`)
-2. install `qr-encode` (eg. `apt install qrencode`)
-3. install `wg(8)`
+2. install `wg(8)`
    * either install full `wireguard` (see _server setup_)
    * or just copy the `wg` binary from the sevrer if possible
    `wg(8)` is only needed for `wg genkey` and `wg pubkey`
+3. install `qr-encode` (eg. `apt install qrencode`) if you want to
+   generate QR codes for mobile devices
 
 ### server setup
 
