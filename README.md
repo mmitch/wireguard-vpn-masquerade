@@ -15,7 +15,8 @@ This guide talks about three different actors that are part of the whole:
 
 * The _server_ is the system where the VPN tunnel ends and the
   _client's_ traffic emerges into the internet.  It needs a static IP
-  address so the _clients_ know where to connect to.
+  address or name resolvable by DNS so the _clients_ know where to
+  connect to.
   
 * A _client_ is a device that uses the VPN tunnel to connect to the
   internet.  It can be a laptop, a desktop pc or a mobile device.
