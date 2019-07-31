@@ -4,14 +4,15 @@ wireguard-vpn-masquerade
 [![Build Status](https://travis-ci.org/mmitch/wireguard-vpn-masquerade.svg?branch=master)](https://travis-ci.org/mmitch/wireguard-vpn-masquerade)
 [![GPL 3+](https://img.shields.io/badge/license-GPL%203%2B-blue.svg)](http://www.gnu.org/licenses/gpl-3.0-standalone.html)
 
-Generate a WireGuard configuration to allow multiple clients access to the internet via a server.  
+Generate a WireGuard VPN tunnel configuration to allow multiple clients access to the internet via a server.  
 Copyright (C) 2019  Christian Garbs <mitch@cgarbs.de>  
 Licensed under GNU GPL v3 (or later)  
 Homepage: https://github.com/mmitch/wireguard-vpn-masquerade  
 
 ## nomenclature
 
-This guide talks about three different actors that are part of the whole:
+This guide talks about three different actors that are part of the
+whole:
 
 * The _server_ is the system where the VPN tunnel ends and the
   _client's_ traffic emerges into the internet.  It needs a static IP
@@ -45,7 +46,7 @@ of `wg genkey`.  Run it multiple times so that all keys are different.
      QR code from the app
 
 If your clients change, edit `wg-conf.clients` and re-run the steps
-for both _server_ and _clients_.
+for both the _server_ and any changed _clients_.
 
 ### git integration
 
@@ -66,14 +67,14 @@ These things have to be done only once.
 
 ### configurator setup
 
-1. install `wireguard-vpn-masquerade` (eg `github clone
+1. install `wireguard-vpn-masquerade` (eg. `github clone
    https://github.com/mmitch/wireguard-vpn-masquerade`)
 2. install `wg(8)`
    * either install full `wireguard` (see _server setup_)
-   * or just copy the `wg` binary from the sevrer if possible
-   `wg(8)` is only needed for `wg genkey` and `wg pubkey`
+   * or just copy the `wg` binary from the server if possible
+     (`wg(8)` is only needed for `wg genkey` and `wg pubkey`)
 3. install `qr-encode` (eg. `apt install qrencode`) if you want to
-   generate QR codes for mobile devices
+   generate QR codes for mobile _clients_
 
 ### server setup
 
@@ -101,10 +102,10 @@ These things have to be done only once.
      ```
    * when using `iptables`, that would be
      ```shell
-     iptables -t nat -A POSTROUTING -o ++EXTERNAL_INTERACE++ -j MASQUERADE
+     iptables -t nat -A POSTROUTING -o ++EXTIF++ -j MASQUERADE
      ```
-   In both cases `++EXTERNAL_INTERFACE++` must be replaced with 
-   the name of the external interface on your server.
+   In both cases `++EXTIF++` must be replaced with the name of the
+   external interface on your server.
 
 3. activate forwarding
    * to try it out once, use
