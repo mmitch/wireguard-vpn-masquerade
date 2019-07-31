@@ -19,9 +19,6 @@ SERVER_VPN_INTERFACE=wg0
 # This is the IP of your server within the VPN subnet.
 SERVER_VPN_IP=10.10.10.10
 
-# This is the network address of the VPN subnet.
-VPN_SUBNET_IP=10.10.10.0
-
 # This is the subnet size of the VPN subnet.
 VPN_SUBNET_SIZE=/24
 
