@@ -1,9 +1,34 @@
+# This is the private key of the server, so keep it secret.
+# Generate the key it with `wg genkey`.
 SERVER_PRIVKEY='PRIVATE-KEY'
+
+# This is the external IP of your server.
+# A DNS name should also be possible but I have not tested this yet.
+# An IPv6 address formatted like [1234:45c::bb:1] should also work,
+# but again I did not test this yet.
 SERVER_EXTERN_IP=SERVER-IP
+
+# This is the UDP port on which WireGuard listens.
+# 51820 is kind of a default port for the first WireGuard device,
+# 51821 for the second and so on.
 SERVER_EXTERN_PORT=51820
-SERVER_VPN_IP=10.10.10.10
+
+# The name of the WireGuard network interface to create.
 SERVER_VPN_INTERFACE=wg0
-VPN_SUBNET_IP=10.10.10.10
+
+# This is the IP of your server within the VPN subnet.
+SERVER_VPN_IP=10.10.10.10
+
+# This is the network address of the VPN subnet.
+VPN_SUBNET_IP=10.10.10.0
+
+# This is the subnet size of the VPN subnet.
 VPN_SUBNET_SIZE=/24
+
+# This is the netmask of the VPN subnet.
 VPN_SUBNET_NETMASK=255.255.255.0
+
+# The DNS server that the clients should use.
+# Can be inside the VPN subnet or in the internet.
+# 8.8.8.8 would be Google DNS.
 DNS_IP=10.10.10.10
