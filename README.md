@@ -29,6 +29,24 @@ whole:
   eventually.  Because the `wg(8)` binary is needed, the _server_ is a
   good candidate for the _configurator_.
 
+## schematic
+
+```
+................
+:              :                .------.
+: client 1 <----VPN-TUNNEL----> |      |
+:              :                |      |           __ ,-. 
+:              :                |      |          (  "   \ 
+: client 2 <----VPN-TUNNEL----> |      | <-----> (      `  )
+:              :                |      |          `--_____"
+:              :                |      |           internet
+: client 3 <----VPN=TUNNEL----> |      |
+:              :                `------'
+:              :                 server
+: evil network :
+:..............:
+```
+
 ## configuration
 
 On the _configurator_:
