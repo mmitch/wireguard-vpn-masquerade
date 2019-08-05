@@ -40,7 +40,7 @@ whole:
 : client 2 <----VPN-TUNNEL----> |      | <-----> (      `  )
 :              :                |      |          `--_____"
 :              :                |      |           internet
-: client 3 <----VPN=TUNNEL----> |      |
+: client 3 <----VPN-TUNNEL----> |      |
 :              :                `------'
 :              :                 server
 : evil network :
