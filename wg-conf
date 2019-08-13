@@ -44,6 +44,24 @@ get_client_index_by_name()
     exit 1
 }
 
+# convert subnet size like /24 to netmask like 255.255.255.0
+# $1 = subnet size
+convert_to_netmask()
+{
+    local NETWORK_BITS="${1#/}"
+
+    local BINARY=
+    while [ ${#BINARY} -lt "$NETWORK_BITS" ]; do
+	BINARY="${BINARY}1"
+    done
+
+    while [ ${#BINARY} -lt 32 ]; do
+	BINARY="${BINARY}0"
+    done
+
+    echo $((2#${BINARY:0:8})).$((2#${BINARY:8:8})).$((2#${BINARY:16:8})).$((2#${BINARY:24:8}))
+}
+
 # print help text
 show_help()
 {
@@ -151,6 +169,8 @@ EOF
 }
 
 source wg-conf.server
+
+VPN_SUBNET_NETMASK=$(convert_to_netmask $VPN_SUBNET_SIZE)
 
 mapfile -t CLIENT_NAME    < <( read_client_column 1 )
 mapfile -t CLIENT_IP      < <( read_client_column 2 )

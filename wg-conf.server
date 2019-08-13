@@ -22,9 +22,6 @@ SERVER_VPN_IP=10.10.10.10
 # This is the subnet size of the VPN subnet.
 VPN_SUBNET_SIZE=/24
 
-# This is the netmask of the VPN subnet.
-VPN_SUBNET_NETMASK=255.255.255.0
-
 # The DNS server that the clients should use.
 # Can be inside the VPN subnet or in the internet.
 # 8.8.8.8 would be Google DNS.
