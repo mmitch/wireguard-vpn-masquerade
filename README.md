@@ -54,17 +54,20 @@ On the _configurator_:
 1. edit `wg-conf.server` and include your network configuration
 2. edit `wg-conf.clients` and include all your clients
 
-In both cases, replace every `PRIVATE-KEY` placeholder the the result
-of `wg genkey`.  Run it multiple times so that all keys are different.
+In both cases, replace every `PRIVATE-KEY` placeholder with the result
+of `wg genkey`.  Run it once for every client so that all keys are
+different.
 
-3. run `wg-conf server` and copy the created configuration to your _server_
+3. run `wg-conf server` and copy the generated configuration to your
+   _server_
 4. run `wg-conf client` for all clients and copy the configuration to
    your _clients_
    * for mobile clients run `wg-conf qr` instead and scan the generated
      QR code from the app
 
-If your clients change, edit `wg-conf.clients` and re-run the steps
-for both the _server_ and any changed _clients_.
+If your clients change, repeat steps 2 to 4 from above: edit
+`wg-conf.clients` and re-generate the configuration for both the
+_server_ and any changed _client_.
 
 ### git integration
 
