@@ -123,10 +123,10 @@ These things have to be done only once.
      ```
    * when using `iptables`, that would be
      ```shell
-     iptables -t nat -A POSTROUTING -o ++EXTIF++ -j MASQUERADE
+     iptables -t nat -A POSTROUTING -o ++EXTERNAL_INTERFACE++ -j MASQUERADE
      ```
-   In both cases `++EXTIF++` must be replaced with the name of the
-   external interface on your server.
+   In both cases `++EXTERNAL_INTERFACE++` must be replaced with
+   the name of the external interface on your server.
 
 3. activate forwarding
    * to try it out once, use
