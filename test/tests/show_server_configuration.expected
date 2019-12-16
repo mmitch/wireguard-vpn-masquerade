@@ -22,7 +22,7 @@ AllowedIPs = 10.10.10.11/32
 PublicKey  = PUBLIC-CLIENT-KEY-2
 AllowedIPs = 10.10.10.12/32
 
-don't forget, there is a private keys in there:
+don't forget, there is a private key in there:
 
   chown root:root /etc/wireguard/wg0.conf
   chmod 600 /etc/wireguard/wg0.conf
